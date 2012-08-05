@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Rtl by donnior</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Rtl</h1>
+        <h2>RTL means R-tag library. It's a tag library for JSP.</h2>
+        <a href="https://github.com/donnior/RTL" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <p>There are two category tags in the package:</p>
+
+<ul>
+<li>Template Tags</li>
+<li>Paginate Tags</li>
+</ul><h1>Templating Tags</h1>
+
+<h2>How to use</h2>
+
+<p>Add dependency in maven. currently you need to install the artifact manually</p>
+
+<div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>me.donnior<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>rtl<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>0.1<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+
+<p>Set the template page in web.xml, make sure the param name is <code>tftTempatePage</code>; if not, RTL will use the default template page which is <code>WEB-INF/views/layout/template.jsp</code></p>
+
+<div class="highlight"><pre><span class="nt">&lt;context-param&gt;</span>
+    <span class="nt">&lt;param-name&gt;</span>tftTempatePage<span class="nt">&lt;/param-name&gt;</span>
+    <span class="nt">&lt;param-value&gt;</span>/WEB-INF/views/layout/template.jsp<span class="nt">&lt;/param-value&gt;</span>
+<span class="nt">&lt;/context-param&gt;</span>
+</pre></div>
+
+<p>Define your template page</p>
+
+<div class="highlight"><pre><span class="err">&lt;</span>%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
+<span class="err">&lt;</span>%@ taglib prefix="r" uri="r-tag"%&gt;
+
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;r:yieldTitle</span> <span class="na">prefix=</span><span class="s">"Gloable Title | "</span><span class="nt">&gt;&lt;/r:yieldTitle&gt;</span>
+
+<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"style.css"</span> <span class="na">type=</span><span class="s">"text/css"</span> <span class="na">media=</span><span class="s">"screen"</span> <span class="nt">/&gt;</span>
+
+<span class="nt">&lt;r:yieldStylesheets&gt;&lt;/r:yieldStylesheets&gt;</span>
+
+<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"jquery-1.7.2.min.js"</span> <span class="nt">&gt;&lt;/script&gt;</span>
+
+<span class="nt">&lt;r:yieldJavascripts</span> <span class="nt">/&gt;</span>
+
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"body"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"sidebar"</span><span class="nt">&gt;</span>
+
+        <span class="nt">&lt;/div&gt;</span>
+
+        <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"main"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"content"</span> <span class="nt">&gt;</span>
+                <span class="nt">&lt;r:yieldBody&gt;&lt;/r:yieldBody&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
+
+<p>Use the template in your every page needed to be templated. Like this:</p>
+
+<div class="highlight"><pre><span class="err">&lt;</span>%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%&gt;
+
+<span class="err">&lt;</span>%@ taglib prefix="r" tagdir="r-tag"%&gt;
+
+<span class="nt">&lt;r:stylesheet</span> <span class="na">name=</span><span class="s">"/resources/styles/input.css"</span><span class="nt">&gt;&lt;/r:javascript&gt;</span>
+
+<span class="nt">&lt;r:javascript</span> <span class="na">name=</span><span class="s">"/resources/js/input.js"</span><span class="nt">&gt;&lt;/r:javascript&gt;</span>
+
+<span class="nt">&lt;r:layout</span> <span class="na">title=</span><span class="s">"title for this page"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h3&gt;</span>page title<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;ul&gt;&lt;li&gt;</span>...<span class="nt">&lt;/li&gt;&lt;/ul&gt;</span>   
+<span class="nt">&lt;/r:layout&gt;</span>
+</pre></div>
+
+<h2>Tags Explain</h2>
+
+<ul>
+<li>yieldTitle<br><code>Used in template page, can set the single page's title</code>
+</li>
+<li>yieldStylesheets<br><code>Used in template page, add the page specific style</code>
+</li>
+<li>yieldJavascripts<br><code>Used in template page, add the page specific javascript</code>
+</li>
+<li>yieldBody<br><code>Used in template page, output the your templated page</code>
+</li>
+<li>layout<br><code>Used in templated page, declare current page needs templated</code>
+</li>
+<li>stylesheet<br><code>Used in templated page, specify one stylesheet which needed by current page</code>
+</li>
+<li>javascript<br><code>Used in templated page, specify one javascript which needed by current page</code>
+</li>
+</ul><h1>Paginate Tags</h1>
+
+<h2>How to use</h2>
+
+<p>Set the i18n resouces needed by the paginate tag, this step is required.</p>
+
+<pre><code>default.paginate.label.previous = Previous Page
+default.paginate.label.next = Next Page
+</code></pre>
+
+<p>Use the PaginateSupportArray to wrap your normal List which will be used on the paginating page.</p>
+
+<div class="highlight"><pre><span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">listAllUsers</span><span class="o">(</span><span class="kt">int</span> <span class="n">page</span><span class="o">,</span> <span class="kt">int</span> <span class="n">pageSize</span><span class="o">){</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">users</span> <span class="o">=</span> <span class="c1">// get record from database</span>
+    <span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="c1">//count from database</span>
+    <span class="n">PaginateSupportArray</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PaginateSupportArray</span><span class="o">(</span><span class="n">users</span><span class="o">);</span>
+    <span class="n">list</span><span class="o">.</span><span class="na">setTotal</span><span class="o">(</span><span class="n">total</span><span class="o">);</span>
+    <span class="n">list</span><span class="o">.</span><span class="na">setPage</span><span class="o">(</span><span class="n">page</span><span class="o">);</span>
+    <span class="n">list</span><span class="o">.</span><span class="na">setPageSize</span><span class="o">(</span><span class="n">pageSize</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">list</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>Use the wrapped List in jsp</p>
+
+<div class="highlight"><pre><span class="nt">&lt;r:paginate</span> <span class="na">data=</span><span class="s">"${results}"</span> <span class="nt">/&gt;</span>
+</pre></div>
+
+<h2>Customize Style</h2>
+
+<p>The paginate tag will generate the following html code without any specific styles, you can set styles in your css file.</p>
+
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"pagination"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/xxx?page=9"</span> <span class="na">title=</span><span class="s">"Next Page"</span> <span class="na">class=</span><span class="s">"label pre"</span><span class="nt">&gt;</span>Previous Page<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/xxx?page=10"</span> <span class="na">class=</span><span class="s">"number current"</span><span class="nt">&gt;</span>10<span class="nt">&lt;/a&gt;</span>  
+    <span class="nt">&lt;span&gt;</span>...<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/xxx?page=31"</span> <span class="na">class=</span><span class="s">"number"</span><span class="nt">&gt;</span>31<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/xxx?page=11"</span> <span class="na">title=</span><span class="s">"Next Page"</span> <span class="na">class=</span><span class="s">"label next"</span><span class="nt">&gt;</span>Next Page<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+<h2>Paginate Tag's attributes explain</h2>
+
+<table>
+<tr>
+<th>Attribute Name</th>
+<th>Required</th>
+<th>Usage</th>
+<th>Note</th>
+    </tr>
+<tr>
+<td>data</td>
+<td>Y</td>
+<td>the data list which got pagination info from</td>
+<td>the data object must be an instance of PaginateSupportArray</td>
+</tr>
+<tr>
+<td>path</td>
+<td>N</td>
+<td>customzied url for links in the pagination</td>
+<td>RTL will get it automaticly if it's not given.</td>
+</tr>
+<tr>
+<td>pageVar</td>
+<td>N</td>
+<td>the variable name which identify the page info</td>
+<td>default is "page"</td>
+</tr>
+<tr>
+<td>preLabel</td>
+<td>N</td>
+<td>the text will be displayed as the previous page link label</td>
+<td>got from i18n if not setted</td>
+</tr>
+<tr>
+<td>nextLabel</td>
+<td>N</td>
+<td>the text will be displayed as the next page link label</td>
+<td>got from i18n if not setted</td>
+</tr>
+</table>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/donnior/RTL/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/donnior/RTL/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/donnior/RTL"></a> is maintained by <a href="https://github.com/donnior">donnior</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
